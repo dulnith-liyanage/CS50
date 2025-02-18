@@ -1,0 +1,11 @@
+sort1 uses: bubble sort
+
+How do you know?: Takes a very large time to sort random50000. But takes the least time to sort sorted50000.
+
+sort2 uses: merge sort
+
+How do you know?: Takes a very low time to sort both random50000 and sorted50000.
+
+sort3 uses: selection sort
+
+How do you know?: Takes a very large time to sort both random50000 and sorted50000.
