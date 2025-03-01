@@ -33,7 +33,8 @@ void sort_pairs(void);
 void lock_pairs(void);
 void print_winner(void);
 
-int final_winner(int inital_winner);
+// int final_winner(int inital_winner);
+bool is_cycle(int winner, int loser);
 
 int main(int argc, string argv[])
 {
@@ -91,22 +92,9 @@ int main(int argc, string argv[])
         printf("\n");
     }
 
-    // for (int i = 0; i < candidate_count; i++)
-    // {
-    //     for (int j = 0; j < candidate_count; j++)
-    //     {
-    //         printf("Voters prefers %s over %s by an amount of %i\n", candidates[i], candidates[j], preferences[i][j] - preferences[j][i]);
-    //     }
-    // }
-
     add_pairs();
 
     sort_pairs();
-
-    // for (int i = 0; i < pair_count; i++)
-    // {
-    //     printf("%s wins over %s\n", candidates[pairs[i].winner], candidates[pairs[i].loser]);
-    // }
 
     lock_pairs();
 
@@ -191,8 +179,6 @@ void sort_pairs(void)
 
             if (considered_difference > highest_difference)
             {
-                // printf("%s and %s is higher than %s and %s", candidates[pairs[j].winner], candidates[pairs[j].loser], candidates[pairs[i].winner], candidates[pairs[i].loser]);
-
                 highest_difference = considered_difference;
 
                 pair initial_pair = pairs[i];
@@ -215,13 +201,13 @@ void lock_pairs(void)
         int considered_winner = pairs[i].winner;
         int considered_loser = pairs[i].loser;
 
-        if (final_winner(considered_winner) != considered_loser)
+        if (is_cycle(considered_winner, considered_loser))
         {
-            locked[considered_winner][considered_loser] = true;
+            locked[considered_winner][considered_loser] = false;
         }
         else
         {
-            locked[considered_winner][considered_loser] = false;
+            locked[considered_winner][considered_loser] = true;
         }
     }
 }
@@ -235,32 +221,38 @@ void print_winner(void)
         int false_count = 0;
         for (int j = 0; j < candidate_count; j++)
         {
-            if (!locked[i][j])
+            if (!locked[j][i])
             {
                 false_count++;
             }
+        }
 
-            if (false_count == candidate_count)
-            {
-                printf("%s\n", candidates[j]);
-            }
+        if (false_count == candidate_count)
+        {
+            printf("%s\n", candidates[i]);
         }
     }
 
     return;
 }
 
-int final_winner(int initial_winner)
+bool is_cycle(int winner, int loser)
 {
-
-    for (int i = 0; i < pair_count; i++)
+    if (winner == loser)
     {
-        if (locked[pairs[i].winner][initial_winner])
+        return true;
+    }
+
+    for (int i = 0; i < candidate_count; i++)
+    {
+        if (locked[loser][i])
         {
-            initial_winner = pairs[i].winner;
-            return final_winner(initial_winner); // Recursive function
+            if (is_cycle(winner, i))
+            {
+                return true;
+            }
         }
     }
 
-    return initial_winner;
+    return false;
 }
