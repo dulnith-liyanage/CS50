@@ -171,11 +171,13 @@ void sort_pairs(void)
 
     for (int i = 0; i < pair_count; i++)
     {
-        int highest_difference = preferences[pairs[i].winner][pairs[i].loser] - preferences[pairs[i].loser][pairs[i].winner];
+        int highest_difference = preferences[pairs[i].winner][pairs[i].loser] -
+                                 preferences[pairs[i].loser][pairs[i].winner];
 
         for (int j = i + 1; j < pair_count; j++)
         {
-            int considered_difference = preferences[pairs[j].winner][pairs[j].loser] - preferences[pairs[j].loser][pairs[j].winner];
+            int considered_difference = preferences[pairs[j].winner][pairs[j].loser] -
+                                        preferences[pairs[j].loser][pairs[j].winner];
 
             if (considered_difference > highest_difference)
             {
