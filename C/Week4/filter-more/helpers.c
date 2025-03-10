@@ -24,9 +24,8 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 {
     for (int i = 0; i < height; i++)
     {
-        for (int j = 0, mid_value = width / 2; j <= mid_value; j++)
+        for (int j = 0, mid_value = width / 2; j < mid_value; j++)
         {
-
             RGBTRIPLE temp = image[i][j];
             image[i][j] = image[i][width - (j + 1)];
             image[i][width - (j + 1)] = temp;
@@ -62,7 +61,7 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             {
                 for (int y = j - 1; y <= j + 1; y++)
                 {
-                    if (x >= 0 && y >= 0 && x <= height && y <= width)
+                    if (x >= 0 && y >= 0 && x < height && y < width)
                     {
                         blue += copy[x][y].rgbtBlue;
                         green += copy[x][y].rgbtGreen;
@@ -73,9 +72,9 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
                 }
             }
 
-            image[i][j].rgbtBlue = round(blue / number_of_pixels);
-            image[i][j].rgbtGreen = round(green / number_of_pixels);
-            image[i][j].rgbtRed = round(red / number_of_pixels);
+            image[i][j].rgbtBlue = round(blue / (float)number_of_pixels);
+            image[i][j].rgbtGreen = round(green / (float)number_of_pixels);
+            image[i][j].rgbtRed = round(red / (float)number_of_pixels);
         }
     }
 
@@ -111,7 +110,7 @@ void edges(int height, int width, RGBTRIPLE image[height][width])
             {
                 for (int y = j - 1; y <= j + 1; y++)
                 {
-                    if (x >= 0 && y >= 0 && x <= height && y <= width)
+                    if (x >= 0 && y >= 0 && x < height && y < width)
                     {
                         int relative_x_position = (x + 1) - i;
                         int relative_y_position = (y + 1) - j;
