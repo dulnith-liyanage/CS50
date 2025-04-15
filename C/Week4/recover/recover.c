@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
             fwrite(buffer, 1, BLOCK_SIZE, current_file);
 
             jpeg_counter++;
+
+            fclose(current_file);
         }
         else if (jpeg_counter != 0)
         {
